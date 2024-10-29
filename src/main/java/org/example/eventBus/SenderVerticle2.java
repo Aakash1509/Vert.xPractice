@@ -16,19 +16,30 @@ public class SenderVerticle2 extends AbstractVerticle
     {
         EventBus eb = vertx.eventBus();
 
+        int[] arr = {1,2,3};
+
         //Map
         Map<String,Object> map = new HashMap<>();
         map.put("name","aakash");
+
+        JsonObject obj = new JsonObject(map);
+        Map<String,Object> map1 = obj.getMap();
+        System.out.println("Converted from json to map : "+map1);
 
         //Arraylist,Linkedlist
         List<Integer> list = new ArrayList<>();
         list.add(5);
         list.add(6);
+        JsonArray array = new JsonArray(list);
 
         //Set
         Set<Integer> set = new LinkedHashSet<>();
         set.add(6);
         set.add(7);
+
+        Queue<Integer> queue = new ArrayDeque<>();
+        queue.add(1);
+        queue.add(2);
 
         //Primitive
         int i = 19;
@@ -42,8 +53,8 @@ public class SenderVerticle2 extends AbstractVerticle
         JsonArray jsonArray = new JsonArray().add("item1").add(5).add(5.9);
 
         //Data structures in Json Object
-        JsonObject jsonObject1 = new JsonObject().put("set",set); //Set when put into JsonObject , it is not transferred through event bus
-        eb.publish("message.address",jsonArray);
+        JsonObject jsonObject1 = new JsonObject().put("queue",queue); //Set when put into JsonObject , it is not transferred through event bus
+        eb.publish("message.address",arr);
 
 
 

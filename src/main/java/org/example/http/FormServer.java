@@ -5,6 +5,7 @@ import io.vertx.core.MultiMap;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import io.vertx.ext.web.Router;
+import io.vertx.ext.web.handler.BodyHandler;
 
 public class FormServer extends AbstractVerticle
 {
@@ -13,6 +14,10 @@ public class FormServer extends AbstractVerticle
         HttpServer server = vertx.createHttpServer();
 
         Router router = Router.router(vertx);
+
+//        BodyHandler bodyHandler = BodyHandler.create().setBodyLimit(1024*1024);
+//
+//        router.route().handler(BodyHandler.create());
 
         router.route("/submit").handler(res->{
            //Indicating server expects multipart form
@@ -29,12 +34,15 @@ public class FormServer extends AbstractVerticle
                         {
                             System.out.println("file size: " + upload.size() + " bytes");
                             System.out.println("file saved.");
+                            //Sending response back to client
+                            res.response().end("Form submission with file received");
                         }
                         else
                         {
 
                         }
-                    } catch (Exception e)
+                    }
+                    catch (Exception e)
                     {
                         throw new RuntimeException(e);
                     }
@@ -43,6 +51,7 @@ public class FormServer extends AbstractVerticle
             });
 
             //Handle form data once entire body is received
+            /*
             res.request().endHandler(v->{
                 MultiMap formAttributes = res.request().formAttributes();
 
@@ -53,7 +62,9 @@ public class FormServer extends AbstractVerticle
                 //Sending response back to client
                 res.response().end("Form submission with file received");
             });
-            
+
+             */
+
         });
 
         server.requestHandler(router).listen(8080,"localhost").onComplete(res->{

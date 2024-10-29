@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>SockJSClient</title>
+    <script src="https://unpkg.com/sockjs-client@1.5.0/dist/sockjs.min.js"></script>
+    <script>
+        window.onload = function() {
+            var socket = new SockJS('http://localhost:8080/eventbus');
+
+           socket.onmessage = function(e) {
+                console.log("Received message: " + e.data);
+
+                // Create a new <p> element
+                var newParagraph = document.createElement("p");
+
+                // Set the content of the <p> element to the message received from the server
+                newParagraph.innerText = "Server says: " + e.data;
+
+                // Append the new <p> element to the body or any other container
+                document.body.appendChild(newParagraph);
+            };
+
+            socket.onopen = function() {
+                console.log("Connected to the server");
+
+                // Send the message immediately after the connection is open
+                console.log("Sending message immediately...");
+
+                socket.send("Hello from client!");
+            };
+
+            socket.onerror = function() {
+                console.error("Error occurred with the connection");
+            };
+
+            socket.onclose = function() {
+                console.log("Connection closed, possibly due to heartbeat timeout");
+            };
+        };
+    </script>
+</head>
+<body>
+<h1>SockJS Client</h1>
+<p id="response">Waiting for server response...</p>
+</body>
+</html>

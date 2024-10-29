@@ -31,10 +31,12 @@ public class HTTPClient2 extends AbstractVerticle
 
                        Buffer totalBuffer = Buffer.buffer();
 
+
                        response.handler(buffer -> {
                            System.out.println("Received a chunk of length: "+buffer.length());
                            totalBuffer.appendBuffer(buffer);
                        });
+
 
                        //Once all chunks are received
 

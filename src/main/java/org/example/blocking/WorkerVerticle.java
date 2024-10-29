@@ -1,17 +1,18 @@
 package org.example.blocking;
 
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Promise;
-import io.vertx.core.Vertx;
+import io.vertx.core.*;
+
+import java.util.concurrent.TimeUnit;
 
 public class WorkerVerticle extends AbstractVerticle
 {
     public void start(Promise<Void> startPromise)
     {
+        System.out.println(Thread.currentThread().getName());
         vertx.executeBlocking(promise->{
                 try{
                     System.out.println("Starting a long-running task");
-                    Thread.sleep(5000);
+                    Thread.sleep(61000);
                     promise.complete("Task completed successfully");
                 }
                 catch (Exception e)
@@ -32,7 +33,9 @@ public class WorkerVerticle extends AbstractVerticle
     }
     public static void main(String[] args)
     {
-        Vertx vertx = Vertx.vertx();
+        VertxOptions options = new VertxOptions().setMaxWorkerExecuteTime(20).setMaxWorkerExecuteTimeUnit(TimeUnit.SECONDS);
+//        DeploymentOptions options1 = new DeploymentOptions().setThreadingModel(ThreadingModel.WORKER);
+        Vertx vertx = Vertx.vertx(options);
         vertx.deployVerticle(new WorkerVerticle(),res->{
            if(res.succeeded())
            {

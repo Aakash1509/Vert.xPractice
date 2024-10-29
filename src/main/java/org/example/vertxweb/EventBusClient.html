@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vert.x Event Bus Bridge Example</title>
+    <!-- Load sockjs-client first -->
+    <script src="https://unpkg.com/sockjs-client@1.5.0/dist/sockjs.min.js"></script>
+    <!-- Then load vertx-eventbus-client -->
+    <script src="https://cdn.jsdelivr.net/npm/vertx3-eventbus-client@3.9.0/vertx-eventbus.min.js"></script>
+</head>
+<body>
+
+<h1>Event Bus Chat</h1>
+
+<input id="message" type="text" placeholder="Type a message">
+<button onclick="sendMessage()">Send</button>
+
+<h2>Messages from server:</h2>
+<ul id="messages"></ul>
+
+<script>
+    var eb; // Declare the event bus variable globally
+
+    // Correct the window.onload (singular)
+    window.onload = function() {
+        // Initialize the event bus connection
+        eb = new EventBus('http://localhost:8080/eventbus/');
+
+        eb.onopen = function () {
+            console.log('Connected to the event bus!');
+
+            // Register handler to receive messages from the server
+            eb.registerHandler('chat.to.client', function (error, message) {
+                if (error) {
+                    console.error(error);
+                } else {
+                    // Display the received message from the server
+                    var messages = document.getElementById("messages");
+                    var li = document.createElement("li");
+                    li.innerText = message.body;
+                    messages.appendChild(li);
+                }
+            });
+        };
+    };
+
+    // Move the sendMessage function outside so it is accessible globally
+    function sendMessage() {
+        var message = document.getElementById("message").value;
+        if (eb) {
+            eb.send('chat.to.server', message);
+        } else {
+            console.error('EventBus is not connected yet.');
+        }
+    }
+</script>
+
+</body>
+</html>

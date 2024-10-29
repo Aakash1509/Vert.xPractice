@@ -2,12 +2,21 @@ package org.example.future;
 
 import io.vertx.core.*;
 
+import java.util.Arrays;
+
 public class FutureCoordination extends AbstractVerticle
 {
     public void start()
     {
         Future<Integer> future1 = getNumber1();
         Future<Integer> future2 = getNumber2();
+        Future<Integer> future3 = getNumber2();
+        Future<Integer> future4 = getNumber2();
+        Future<Integer> future5 = getNumber2();
+        Future<Integer> future6 = getNumber2();
+        Future<Integer> future7 = getNumber2();
+        Future<Integer> future8 = getNumber2();
+        Future<Integer> future9 = getNumber2();
 
         /*Normal future
 
@@ -56,7 +65,7 @@ public class FutureCoordination extends AbstractVerticle
 
         //FUTURE JOIN
 
-        Future.join(future1,future2).onComplete(ar->{
+        Future.join(Arrays.asList(future1,future2,future3,future4,future5,future6,future7,future8,future9)).onComplete(ar->{
             if(ar.succeeded())
             {
                 System.out.println("Join future "+ar.result());
@@ -89,7 +98,7 @@ public class FutureCoordination extends AbstractVerticle
     {
         Vertx vertx = Vertx.vertx();
 
-//        DeploymentOptions options = new DeploymentOptions().setInstances(4);
+        DeploymentOptions options = new DeploymentOptions();
 
         vertx.deployVerticle(FutureCoordination.class.getName(),new DeploymentOptions().setInstances(4));
     }

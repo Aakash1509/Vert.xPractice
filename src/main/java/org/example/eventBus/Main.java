@@ -1,5 +1,6 @@
 package org.example.eventBus;
 
+import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
 
 public class Main
@@ -7,6 +8,27 @@ public class Main
     public static void main(String[] args)
     {
         Vertx vertx = Vertx.vertx();
+        DeploymentOptions options = new DeploymentOptions().setInstances(1);
+
+        vertx.deployVerticle(ExampleA.class.getName(),options,res->{
+            try
+            {
+                if(res.succeeded())
+                {
+                    System.out.println("Receiver verticle deployed successfully");
+
+                    vertx.deployVerticle(ExampleB.class.getName());
+                }
+                else
+                {
+                    System.out.println("Failed to deploy verticle : "+res.cause().getMessage());
+                }
+            } catch (Exception e)
+            {
+                System.out.println(e);
+            }
+
+        });
 
 
         /*
@@ -25,8 +47,9 @@ public class Main
 
          */
 
-         /*
 
+
+        /*
         vertx.deployVerticle(new ReceiverVerticle2(),res->{
             try
             {
@@ -46,7 +69,9 @@ public class Main
             }
 
         });
+
          */
+
         /*
         vertx.deployVerticle(new ReceiverReply(),res->{
             if(res.succeeded())
@@ -62,6 +87,7 @@ public class Main
         });
 
          */
+        /*
         vertx.deployVerticle(new TimeOutReceiver(),res->{
            if(res.succeeded())
            {
@@ -74,5 +100,7 @@ public class Main
                System.out.println("Failed to deploy verticle : "+res.cause().getMessage());
            }
         });
+
+         */
     }
 }

@@ -9,10 +9,12 @@ public class AsyncReadFile extends AbstractVerticle
 {
     public void start()
     {
-        vertx.fileSystem().open("my_file.txt",new OpenOptions().setRead(true),result->{
+        vertx.fileSystem().open("1GB_file.txt",new OpenOptions().setRead(true),result->{
            if(result.succeeded())
            {
                AsyncFile file = result.result();
+
+               file.setReadBufferSize(16*1024);
 
                file.handler(buffer->{
                    System.out.println("Chunk size : "+buffer.length());

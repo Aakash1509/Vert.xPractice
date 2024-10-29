@@ -7,7 +7,7 @@ public class ReadFile extends AbstractVerticle
 {
     public void start()
     {
-        vertx.fileSystem().readFile("my_file.txt").onComplete(res->{
+        vertx.fileSystem().readFile("1GB_file.txt").onComplete(res->{
             if(res.succeeded())
             {
                 System.out.println("File content length : "+res.result().length());

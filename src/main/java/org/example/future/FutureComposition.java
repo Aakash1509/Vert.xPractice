@@ -31,8 +31,7 @@ public class FutureComposition extends AbstractVerticle
         //Using andThen approach
 
         Future<Integer> future = getNumber().
-                compose(number->{
-                    return doubleNumber(number);})
+                compose(number-> doubleNumber(number))
                 .onComplete(ar->{
                     if(ar.succeeded()){
                         System.out.println("Final result: "+ar.result());

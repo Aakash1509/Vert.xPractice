@@ -21,7 +21,7 @@ public class Practice extends AbstractVerticle
             return Future.succeededFuture(lineCount);
         });
 
-        //Wrting result in another file
+        //Writing result in another file
         Future<Void> writeFuture = processedFuture.compose(lineCount->{
             String output = "The file contains "+lineCount+" lines";
             return vertx.fileSystem().writeFile("output.txt",Buffer.buffer(output));
