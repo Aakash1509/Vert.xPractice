@@ -16,14 +16,16 @@ public class PushSocket extends AbstractVerticle {
             // Create a PUSH socket
             ZMQ.Socket pushSocket = context.createSocket(SocketType.PUSH);
             pushSocket.setHWM(100);
-            pushSocket.bind("tcp://*:5557"); // Bind to port 5557
+            pushSocket.connect("tcp://*:5557"); // Bind to port 5557
 
             int count = 0;
             while (!Thread.currentThread().isInterrupted()) {
                 // Send a message
-                String message = "Task-" + count++;
-                System.out.println("Sending: " + message);
-                pushSocket.send(message.getBytes(ZMQ.CHARSET),ZMQ.DONTWAIT);
+//                String message = "Task-" + count++;
+//                System.out.println("Sending: " + message);
+//                pushSocket.send(message.getBytes(ZMQ.CHARSET),ZMQ.DONTWAIT);
+                String receivedMessage = pushSocket.recvStr(0);
+                System.out.println("Worker 1 received: " + receivedMessage);
 
                 // Sleep for a second between messages
                 try {

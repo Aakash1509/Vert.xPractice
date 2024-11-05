@@ -24,6 +24,8 @@ public class Publisher extends AbstractVerticle
                     System.out.println("Publishing: "+message);
 //                    publisher.send(message.getBytes(ZMQ.CHARSET));
                     publisher.send(arr);
+//                    String msg = publisher.recvStr();
+//                    System.out.println(msg);
                     try {
                         Thread.sleep(10);
                     } catch (InterruptedException e) {
